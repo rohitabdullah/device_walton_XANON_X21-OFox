@@ -25,29 +25,22 @@ jobs:
           chmod a+x ~/bin/repo
           sudo ln -sf ~/bin/repo /usr/bin/repo
 
-      - name: Initialize OrangeFox Manifest
+      - name: Sync OrangeFox Source
         run: |
-          mkdir -p workspace
-          cd workspace
-          git config --global user.name "rohitabdullahh"
-          git config --global user.email "adertr019@gmail.com"
-          echo "machine gitlab.com login oauth2 password ${{ secrets.GITLAB_PAT }}" > ~/.netrc
-          chmod 600 ~/.netrc
-          repo init --depth=1 -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1
-
-      - name: Sync Source
-        run: |
-          cd workspace
-          repo sync -j$(nproc --all) --force-sync
+          git config --global user.name "rohitabdullah"
+          git config --global user.email "inayeemabdullah@gmail.com"
+          git clone https://gitlab.com/OrangeFox/sync.git
+          cd sync
+          ./orangefox_sync.sh --branch 12.1 --path ${GITHUB_WORKSPACE}/workspace
 
       - name: Move Device Tree to Workspace
         run: |
-          mkdir -p workspace/device/walton/XANON_X21
-          cp -r device/walton/XANON_X21/* workspace/device/walton/XANON_X21/
+          mkdir -p ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21
+          cp -r device/walton/XANON_X21/* ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21/
 
       - name: Compile Recovery
         run: |
-          cd workspace
+          cd ${GITHUB_WORKSPACE}/workspace
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
@@ -59,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-XANON_X21
-          path: workspace/out/target/product/XANON_X21/vendor_boot.img
+          path: ${GITHUB_WORKSPACE}/workspace/out/target/product/XANON_X21/vendor_boot.img
