@@ -31,7 +31,7 @@ jobs:
           cd workspace
           git config --global user.name "rohitabdullah"
           git config --global user.email "inayeemabdullah@gmail.com"
-          repo init --depth=1 -u git://gitlab.com/OrangeFox/manifest.git -b fox_12.1
+          repo init --depth=1 -u https://rohitabdullah:${{ secrets.GH_PAT }}@gitlab.com/OrangeFox/manifest.git -b fox_12.1
 
       - name: Sync Source
         run: |
