@@ -29,10 +29,11 @@ jobs:
         run: |
           mkdir -p workspace
           cd workspace
-          git config --global user.name "rohitabdullah"
-          git config --global user.email "inayeemabdullah@gmail.com"
-          git config --global --unset-all credential.helper || true
-          repo init --depth=1 -u https://gitlab.com/OrangeFox/manifest.git -b fox_12.1
+          git config --global user.name "rohitabdullahh"
+          git config --global user.email "adertr019@gmail.com"
+          echo "machine gitlab.com login oauth2 password ${{ secrets.GITLAB_PAT }}" > ~/.netrc
+          chmod 600 ~/.netrc
+          repo init --depth=1 -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1
 
       - name: Sync Source
         run: |
