@@ -64,12 +64,15 @@ jobs:
           # 2. Inject the modern Android 11+ device registration
           echo "COMMON_LUNCH_CHOICES := omni_XANON_X21-eng omni_XANON_X21-userdebug" >> device/walton/XANON_X21/AndroidProducts.mk
           
-          # 3. Temporarily disable the strict crash kill-switch
+          # 3. Comment out obsolete PRODUCT_STATIC_BOOT_CONTROL_HAL
+          sed -i 's/PRODUCT_STATIC_BOOT_CONTROL_HAL/# PRODUCT_STATIC_BOOT_CONTROL_HAL/g' device/walton/XANON_X21/device.mk
+          
+          # 4. Temporarily disable the strict crash kill-switch
           set +e
           source build/envsetup.sh
           set -e
           
-          # 4. Compile
+          # 5. Compile
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
           export LC_ALL="C"
