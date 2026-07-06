@@ -13,6 +13,22 @@ jobs:
         with:
           path: device/walton/XANON_X21
 
+      - name: Checkout Device Tree
+        uses: actions/checkout@v4
+        with:
+          path: device/walton/XANON_X21
+
+      - name: Maximize Build Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Setup Build Environment
         run: |
           sudo apt-get update
