@@ -1,0 +1,60 @@
+name: OrangeFox Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Device Tree
+        uses: actions/checkout@v4
+        with:
+          path: device/walton/XANON_X21
+
+      - name: Setup Build Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git-core gnupg flex bison build-essential zip curl zlib1g-dev libc6-dev-i386 libncurses5 x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig
+
+      - name: Install Repo Tool
+        run: |
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          sudo ln -sf ~/bin/repo /usr/bin/repo
+
+      - name: Initialize OrangeFox Manifest
+        run: |
+          mkdir -p workspace
+          cd workspace
+          git config --global user.name "CyberVenom"
+          git config --global user.email "admin@cyberxcorp.com"
+          repo init --depth=1 -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1
+
+      - name: Sync Source
+        run: |
+          cd workspace
+          repo sync -j$(nproc --all) --force-sync
+
+      - name: Move Device Tree to Workspace
+        run: |
+          mkdir -p workspace/device/walton/XANON_X21
+          cp -r device/walton/XANON_X21/* workspace/device/walton/XANON_X21/
+
+      - name: Compile Recovery
+        run: |
+          cd workspace
+          source build/envsetup.sh
+          export ALLOW_MISSING_DEPENDENCIES=true
+          export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
+          export LC_ALL="C"
+          lunch omni_XANON_X21-eng
+          mka vendorbootimage
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrangeFox-XANON_X21
+          path: workspace/out/target/product/XANON_X21/vendor_boot.img
