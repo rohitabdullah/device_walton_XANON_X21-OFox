@@ -31,7 +31,7 @@ jobs:
           cd workspace
           git config --global user.name "CyberVenom"
           git config --global user.email "admin@cyberxcorp.com"
-          repo init --depth=1 -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1
+          repo init --depth=1 -u https://gitlab.com/OrangeFox/manifest.git -b fox_12.1
 
       - name: Sync Source
         run: |
