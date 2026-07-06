@@ -54,15 +54,17 @@ jobs:
           mkdir -p ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21
           cp -r device/walton/XANON_X21/* ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21/
 
-      - name: Compile Recovery
+            - name: Compile Recovery
         run: |
           cd ${GITHUB_WORKSPACE}/workspace
+          sed -i '/add_lunch_combo/d' device/walton/XANON_X21/vendorsetup.sh
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
           export LC_ALL="C"
           lunch omni_XANON_X21-eng
           mka vendorbootimage
+
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
