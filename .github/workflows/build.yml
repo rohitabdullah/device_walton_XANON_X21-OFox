@@ -54,7 +54,7 @@ jobs:
           mkdir -p ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21
           cp -r device/walton/XANON_X21/* ${GITHUB_WORKSPACE}/workspace/device/walton/XANON_X21/
 
-            - name: Compile Recovery
+      - name: Compile Recovery
         run: |
           cd ${GITHUB_WORKSPACE}/workspace
           sed -i '/add_lunch_combo/d' device/walton/XANON_X21/vendorsetup.sh
