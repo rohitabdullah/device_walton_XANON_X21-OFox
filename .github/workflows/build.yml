@@ -29,10 +29,9 @@ jobs:
         run: |
           mkdir -p workspace
           cd workspace
-          git config --global user.name "CyberVenom"
-          git config --global user.email "admin@cyberxcorp.com"
-          git config --global credential.helper ""
-          repo init --depth=1 -u https://gitlab.com/OrangeFox/manifest.git -b fox_12.1
+          git config --global user.name "rohitabdullah"
+          git config --global user.email "inayeemabdullah@gmail.com"
+          repo init --depth=1 -u git://gitlab.com/OrangeFox/manifest.git -b fox_12.1
 
       - name: Sync Source
         run: |
